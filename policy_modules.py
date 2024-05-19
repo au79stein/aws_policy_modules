@@ -5,7 +5,7 @@
 import json, boto3, re
 from copy import deepcopy
 
-class Statuement(object):
+class Statement(object):
   def __init__(self, statement, source_policy):
     self.__fields = ['Sid', 'Effect', 'Principal', 'Action', 'Resource', 'Condition']
     self.__ori_statement = deepcopy(statement)
