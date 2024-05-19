@@ -3,6 +3,7 @@
 # aws_policy_modules
 
 import json, boto3, re
+from pprint import pprint
 from copy import deepcopy
 
 class Statement(object):
@@ -113,4 +114,8 @@ class BucketPolicy(PolicyBase):
     resp = self._PolicyBase__serviceModule.put_bucket_policy(Bucket=self._PolicyBase__resourceIdentifier, Policy=policy_string)
     return resp
 
+  def show_policy(self, **kwargs):
+    resp = self._PolicyBase__serviceModule.get_bucket_policy(Bucket=self._PolicyBase__resourceIdentifier)
+    pol = json.loads(resp['Policy'])
+    pprint(pol)
 
