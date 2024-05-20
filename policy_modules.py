@@ -34,6 +34,9 @@ class Statement(object):
     for field in self.__fields:
       setattr(self, field, self.content.get(field, None))
 
+  def show_statement(self):
+    pprint(self.source_policy)
+
 
 class PolicyBase(object):
   def __init__(self, **kwargs):
@@ -59,7 +62,7 @@ class PolicyBase(object):
     self.save()
 
   def __is_principal_valid(self, p):
-    # Identify valid principals. Delte principal will be something like AI###########
+    # Identify valid principals. Deleted principal will be something like AI###########
     if re.compile("[A-Z0-9]{21}").match(p):
       return False
     else:
@@ -85,6 +88,12 @@ class PolicyBase(object):
       return None
     else:
       return Statement(searching[0], self)
+
+  def show_statement(self):
+    for statement in self.Statement:
+      pprint(statement)
+    #pol = json.loads(resp['Policy'])
+    #pprint(pol)
 
   def reload(self):
     self.content = self.get_policy()
@@ -113,9 +122,4 @@ class BucketPolicy(PolicyBase):
   def put_policy(self, policy_string):
     resp = self._PolicyBase__serviceModule.put_bucket_policy(Bucket=self._PolicyBase__resourceIdentifier, Policy=policy_string)
     return resp
-
-  def show_policy(self, **kwargs):
-    resp = self._PolicyBase__serviceModule.get_bucket_policy(Bucket=self._PolicyBase__resourceIdentifier)
-    pol = json.loads(resp['Policy'])
-    pprint(pol)
 
